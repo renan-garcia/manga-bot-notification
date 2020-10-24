@@ -93,17 +93,14 @@ module NeoxCrawler
   end
 
   def self.get_mangas_by_parse_favorites(doc)
-    puts 'Capturando Mangas'
     doc.search('.item-infor').map { |manga| mount_manga_object(manga) }
   end
 
   def self.mount_manga_object(manga)
-    puts 'Manga capturado'
     Manga.new(title: manga.at('h3//a').children.text, chapter: manga.at('.chapter-item').at('a').text)
   end
 
   def self.get_mangas_by_parse_releases(doc)
-    puts 'Capturando Mangas'
     doc.search('.page-item-detail').map { |manga| mount_manga_object(manga) }
   end
 end

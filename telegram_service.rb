@@ -27,7 +27,6 @@ module TelegramService
   end
 
   def self.send_message(text)
-    puts 'Enviando Mensagem para o Telegram'
     uri = URI.parse("https://api.telegram.org/bot#{TELEGRAM_TOKEN}/sendMessage")
     request = Net::HTTP::Post.new(uri)
     request.content_type = 'application/json'

@@ -24,7 +24,6 @@ module Bot
   end
 
   def self.filter_mangas(mangas, ignore_favorites)
-    puts 'Filtrando mangas'
     filtered_mangas = []
     mangas_in_db = Database.list(Manga)
     favorites_mangas_in_db = Database.list(Favorite)
@@ -33,7 +32,6 @@ module Bot
       next unless manga_in_favorites?(manga, favorites_mangas_in_db) || ignore_favorites
 
       check_result = check_this_manga_chapter_in_db(manga, mangas_in_db)
-      puts 'Manga já existente já atualizado' if check_result[:status] == :old
       next if check_result[:status] == :old
 
       check_result[:status] == :new ? Database.insert(manga) : Database.update(manga)
@@ -43,7 +41,6 @@ module Bot
   end
 
   def self.print_result(mangas)
-    puts 'Printando resultado'
     text = String.new
     mangas.each do |manga|
       text << "<= #{manga.title} => \n"
@@ -55,26 +52,19 @@ module Bot
   end
 
   def self.search_latest_release_pages(number)
-    puts 'Pegando as Paginas...'
     text = String.new
     number.times do |index|
-      puts "Pegando a pagina #{index}"
       mangas = NeoxCrawler.release_page(index)
       filtered_mangas = filter_mangas(mangas, false)
       text << print_result(filtered_mangas)
       sleep(5)
     end
-    puts ' === Busca Terminada ==='
     text
   end
 
   def self.search_favorites
-    puts 'Pegando os Favoritos...'
-    text = String.new
     mangas = NeoxCrawler.favorites
     filtered_mangas = filter_mangas(mangas, true)
-    text << print_result(filtered_mangas)
-    puts ' === Busca Terminada ==='
-    text
+    print_result(filtered_mangas)
   end
 end
