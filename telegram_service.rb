@@ -4,19 +4,23 @@ require 'net/http'
 require 'uri'
 require 'telegram/bot'
 require 'dotenv/load'
+require_relative './models/manga'
+require_relative './database'
+require_relative './bot'
 
 TELEGRAM_TOKEN = ENV['TELEGRAM_TOKEN'] || 'SEU TOKEN'
 CHAT_ID = ENV['CHAT_ID'] || 'CHAT ID'
 
-class TelegramService
+module TelegramService
   def self.listen
     Telegram::Bot::Client.run(TELEGRAM_TOKEN) do |bot|
       bot.listen do |message|
         case message.text
-        when '/ping'
-          bot.api.send_message(chat_id: message.chat.id, text: "Funcionando, #{message.from.first_name} - #{message.chat.id}")
+        when '/update-mangas'
+          result = Bot.search_favorites
+          bot.api.send_message(chat_id: message.chat.id, text: result.empty? ? 'Nenhum lançamento novo' : result )
         when '/mangas'
-          bot.api.send_message(chat_id: message.chat.id, text: search_last_pages(1))
+          bot.api.send_message(chat_id: message.chat.id, text: Database.list(Manga).map { |f| "#{f.title} : #{f.chapter} \n"}.join )
         end
       end
     end

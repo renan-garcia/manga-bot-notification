@@ -21,18 +21,29 @@ GEM
     method_source (1.0.0)
     mini_portile2 (2.4.0)
     multipart-post (2.1.1)
+    mustermann (1.1.1)
+      ruby2_keywords (~> 0.0.1)
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    rack (2.2.3)
+    rack-protection (2.1.0)
+      rack
     ruby2_keywords (0.0.2)
     sdbm (1.0.0)
+    sinatra (2.1.0)
+      mustermann (~> 1.0)
+      rack (~> 2.2)
+      rack-protection (= 2.1.0)
+      tilt (~> 2.0)
     telegram-bot-ruby (0.13.0)
       faraday
       inflecto
       virtus
     thread_safe (0.3.6)
+    tilt (2.0.10)
     virtus (1.0.5)
       axiom-types (~> 0.1)
       coercible (~> 1.0)
@@ -48,6 +59,7 @@ DEPENDENCIES
   nokogiri!
   pry!
   sdbm!
+  sinatra!
   telegram-bot-ruby!
 
 RUBY VERSION

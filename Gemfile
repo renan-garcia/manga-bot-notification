@@ -8,4 +8,5 @@ source 'https://rubygems.org' do
   gem 'sdbm'
   gem 'dotenv'
   gem 'awesome_print'
+  gem 'sinatra'
 end

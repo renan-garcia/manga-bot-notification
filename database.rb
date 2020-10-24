@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'sdbm'
-require_relative './manga'
-require_relative './favorite'
+require_relative './models/manga'
+require_relative './models/favorite'
 
-class Database
+module Database
 
   def self.insert(item)
     case item

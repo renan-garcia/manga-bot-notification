@@ -3,9 +3,9 @@
 require 'net/http'
 require 'uri'
 require 'nokogiri'
-require_relative './manga'
+require_relative './models/manga'
 
-class NeoxCrawler
+module NeoxCrawler
   def self.favorites
     doc = Nokogiri::HTML(favorites_request)
     get_mangas_by_parse_favorites(doc)
