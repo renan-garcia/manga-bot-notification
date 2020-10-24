@@ -7,6 +7,7 @@ source 'https://rubygems.org' do
   gem 'nokogiri'
   gem 'sdbm'
   gem 'dotenv'
+  gem 'unicorn'
   gem 'awesome_print'
   gem 'sinatra'
 end
