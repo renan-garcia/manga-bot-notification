@@ -70,7 +70,8 @@ module TelegramService
 
   def self.help_message
     <<-HEREDOC
-      /register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2... 
+        Comandos:
+      /register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2...
       /update-mangas - Força a atualização de checagem de novos mangas
       /my-mangas - Lista todos os seus mangas já trackeados pelo BOT
       /help - Lista de comandos
