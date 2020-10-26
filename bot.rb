@@ -16,6 +16,7 @@ module Bot
 
   def self.check_this_manga_chapter_in_db(manga, mangas_in_db)
     manga_in_db = mangas_in_db.find { |m| m.title == manga.title }
+
     return { status: :new } if manga_in_db.nil?
 
     return { status: :old } if manga_in_db.chapter.to_i >= manga.chapter.to_i

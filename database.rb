@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'sdbm'
 require_relative './models/manga'
 require_relative './models/favorite'
+require 'firebase'
 
 module Database
 
@@ -42,51 +42,56 @@ module Database
 
   private
 
+  # Client
+  def self.firebase
+    private_key_json_string = Base64.urlsafe_decode64 ENV['FIREBASE_PRIVATE_KEY_BASE64']
+
+    Firebase::Client.new(ENV['FIREBASE_URL'], private_key_json_string)
+  end
+
   # Mangas
 
   def self.insert_manga(manga)
-    SDBM.open 'mangas' do |db|
-      db[manga.title] = manga.chapter
-    end
+    firebase.push('mangas', { title: manga.title, chapter: manga.chapter })
   end
 
   def self.list_mangas
     mangas = []
-    SDBM.open 'mangas' do |db|
-      db.each do |key, value|
-        mangas << Manga.new(title: key, chapter: value)
-      end
+    response = firebase.get('mangas')
+    return mangas if response.code != 200 || response.body.nil?
+
+    response.body.each_key do |key|
+      mangas << Manga.new(id: key, title: response.body[key]['title'], chapter: response.body[key]['chapter'])
     end
     mangas
   end
 
   def self.update_manga(manga)
-    SDBM.open 'mangas' do |db|
-      db.update(manga.title => manga.chapter)
-    end
+    return if manga.id.nil?
+
+    firebase.update("mangas/#{manga.id}", { title: manga.title, chapter: manga.chapter })
   end
 
   # Favoritos
 
   def self.insert_favorite(favorite)
-    SDBM.open 'favorites' do |db|
-      db[favorite.title] = favorite.active
-    end
+    firebase.push('favorites', { title: favorite.title, active: favorite.active })
   end
 
   def self.list_favorites
     favorites = []
-    SDBM.open 'favorites' do |db|
-      db.each do |key, value|
-        favorites << Favorite.new(title: key, active: value)
-      end
+    response = firebase.get('favorites')
+    return favorites if response.code != 200 || response.body.nil?
+
+    response.body.each_key do |key|
+      favorites << Favorite.new(id: key, title: response.body[key]['title'], active: response.body[key]['active'])
     end
     favorites
   end
 
   def self.update_favorite(favorite)
-    SDBM.open 'favorites' do |db|
-      db.update(favorite.title => favorite.active)
-    end
+    return if favorite.id.nil?
+
+    firebase.update("favorites/#{favorite.id}", { title: favorite.title, active: favorite.active })
   end
 end

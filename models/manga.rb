@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 class Manga
-  attr_accessor :title, :chapter
+  attr_accessor :title, :chapter, :id
 
   def initialize(**args)
+    @id = args[:id]
     @title = args[:title]
     @chapter = sanitize_chapter args[:chapter]
   end

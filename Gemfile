@@ -5,9 +5,9 @@ source 'https://rubygems.org' do
   gem 'pry'
   gem 'telegram-bot-ruby'
   gem 'nokogiri'
-  gem 'sdbm'
   gem 'dotenv'
   gem 'unicorn'
   gem 'awesome_print'
   gem 'sinatra'
+  gem 'firebase'
 end
