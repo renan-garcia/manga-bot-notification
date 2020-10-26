@@ -41,6 +41,15 @@ module TelegramService
             result = Bot.search_favorites(user)
             bot.api.send_message(chat_id: message.chat.id, text: result.empty? ? 'Nenhum lançamento novo' : result)
           end
+        when '/update-mangas'
+          users = Database.list(User)
+          user = users.find { |u| u.chat_id == message.chat.id && u.active? }
+          if user.nil?
+            bot.api.send_message(chat_id: message.chat.id, text: 'Usuário não cadastrado ou inativo')
+          else
+            result = Bot.search_my_mangas(user)
+            bot.api.send_message(chat_id: message.chat.id, text: result)
+          end
         when '/remove-register'
           users = Database.list(User)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }

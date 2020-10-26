@@ -71,6 +71,12 @@ module Bot
     print_result(filtered_mangas)
   end
 
+  def self.search_my_mangas(user)
+    mangas = Database.list(Manga)
+    my_mangas = mangas.select { |m| m.user_id == user.id }
+    print_result(my_mangas)
+  end
+
   def self.register_user(cookie, chat_id, first_name, last_name)
     return if cookie.empty?
 
