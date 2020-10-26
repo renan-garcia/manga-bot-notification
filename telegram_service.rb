@@ -41,7 +41,7 @@ module TelegramService
             result = Bot.search_favorites(user)
             bot.api.send_message(chat_id: message.chat.id, text: result.empty? ? 'Nenhum lançamento novo' : result)
           end
-        when '/update-mangas'
+        when '/my-mangas'
           users = Database.list(User)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }
           if user.nil?
