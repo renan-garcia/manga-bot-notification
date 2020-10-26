@@ -33,14 +33,34 @@ bundle install
 
 ### Set environment variables
 
-Create an .env file and add TELEGRAM_TOKEN, NEOX_COOKIE and CHAT_ID inside them.
+Create an .env file and add TELEGRAM_TOKEN, NEOX_COOKIE, FIREBASE_URL, FIREBASE_PRIVATE_KEY_BASE64 and CHAT_ID inside them.
 
 ## Run
 
 ```shell
-pry bot.rb
+bundle exec unicorn -c config/unicorn.rb
 ```
 
 ## Deploy
 
-### In development, feel free to pull requests
+### With Heroku pipeline (recommended)
+
+Push to Heroku staging remote:
+
+```shell
+git push heroku-staging
+```
+
+Go to the Heroku Dashboard and [promote the app to production](https://devcenter.heroku.com/articles/pipelines) or use Heroku CLI:
+
+```shell
+heroku pipelines:promote -a project-staging
+```
+
+### Directly to production (not recommended)
+
+Push to Heroku production remote:
+
+```shell
+git push heroku
+```
