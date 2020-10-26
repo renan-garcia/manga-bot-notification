@@ -6,14 +6,14 @@ require 'nokogiri'
 require_relative './models/manga'
 
 module NeoxCrawler
-  def self.favorites
-    doc = Nokogiri::HTML(favorites_request)
-    get_mangas_by_parse_favorites(doc)
+  def self.favorites(user)
+    doc = Nokogiri::HTML(favorites_request(user.cookie))
+    get_mangas_by_parse_favorites(doc, user.id)
   end
 
-  def self.release_page(page)
+  def self.release_page(user, page)
     doc = Nokogiri::HTML(release_page_request(page))
-    get_mangas_by_parse_releases(doc)
+    get_mangas_by_parse_releases(doc, user.id)
   end
 
   private
@@ -63,7 +63,7 @@ module NeoxCrawler
     response.body
   end
 
-  def self.favorites_request
+  def self.favorites_request(cookie)
     uri = URI.parse('https://neoxscans.com/user-settings/?tab=bookmark')
     request = Net::HTTP::Get.new(uri)
     request['Authority'] = 'neoxscans.com'
@@ -79,7 +79,7 @@ module NeoxCrawler
     request['Sec-Fetch-Dest'] = 'document'
     request['Referer'] = 'https://neoxscans.com/user-settings/?tab=history'
     request['Accept-Language'] = 'pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7'
-    request['Cookie'] = '__cfduid=d0c9c550851869c099e1b87f22942904d1603428840; wordpress_logged_in_68d04c2bab4a6715b93f8934fe208a2c=renangarcia%7C1604652978%7C9Be6fz4859ho7coikRynduvLjLr9Rafgf75ehU9WO0b%7Ca7814e49ac3ecf467e580bf2bd16e0b4df63bd69b62bda41ac6c1426d6e02345'
+    request['Cookie'] = cookie
 
     req_options = {
       use_ssl: uri.scheme == 'https',
@@ -92,15 +92,15 @@ module NeoxCrawler
     response.body
   end
 
-  def self.get_mangas_by_parse_favorites(doc)
-    doc.search('.item-infor').map { |manga| mount_manga_object(manga) }
+  def self.get_mangas_by_parse_favorites(doc, user_id)
+    doc.search('.item-infor').map { |manga| mount_manga_object(manga, user_id) }
   end
 
-  def self.mount_manga_object(manga)
-    Manga.new(title: manga.at('h3//a').children.text, chapter: manga.at('.chapter-item').at('a').text)
+  def self.mount_manga_object(manga, user_id)
+    Manga.new(title: manga.at('h3//a').children.text, chapter: manga.at('.chapter-item').at('a').text, user_id: user_id)
   end
 
-  def self.get_mangas_by_parse_releases(doc)
-    doc.search('.page-item-detail').map { |manga| mount_manga_object(manga) }
+  def self.get_mangas_by_parse_releases(doc, user_id)
+    doc.search('.page-item-detail').map { |manga| mount_manga_object(manga, user_id) }
   end
 end

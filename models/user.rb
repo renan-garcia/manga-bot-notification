@@ -1,13 +1,15 @@
 # frozen_string_literal: true
 
-class Favorite
-  attr_accessor :title, :active, :id, :user_id
+class User
+  attr_accessor :id, :first_name, :last_name, :cookie, :chat_id, :active
 
   def initialize(**args)
     @id = args[:id]
-    @title = args[:title]
+    @first_name = args[:first_name]
+    @last_name = args[:last_name]
+    @cookie = args[:cookie]
+    @chat_id = args[:chat_id]
     @active = args[:active]
-    @user_id = args[:user_id]
   end
 
   def active?
