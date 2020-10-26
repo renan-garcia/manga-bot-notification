@@ -70,12 +70,13 @@ module TelegramService
 
   def self.help_message
     <<-HEREDOC
-      /register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2... \n
-      /update-mangas - Força a atualização de checagem de novos mangas\n
-      /my-mangas - Lista todos os seus mangas já trackeados pelo BOT\n
-      /help - Lista de comandos\n
-      /remove-register - Desativa seu registro no BOT para parar de trackear seus mangas favoritos\n
-      \n Esse bot foi criado mais para uso pessoal e como achei que outras pessoas podem desejar isso eu disponibilizei para uso de terceiros. Não me responsabilizo por qualquer uso indevido. Para qualquer duvida ou sugestão acesse o repositório oficial do bot: https://github.com/renan-garcia/manga-bot-notification .\n
+      /register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2... 
+      /update-mangas - Força a atualização de checagem de novos mangas
+      /my-mangas - Lista todos os seus mangas já trackeados pelo BOT
+      /help - Lista de comandos
+      /remove-register - Desativa seu registro no BOT para parar de trackear seus mangas favoritos
+
+      Esse bot foi criado mais para uso pessoal e como achei que outras pessoas podem desejar isso eu disponibilizei para uso de terceiros. Não me responsabilizo por qualquer uso indevido. Para qualquer duvida ou sugestão acesse o repositório oficial do bot: https://github.com/renan-garcia/manga-bot-notification .
     HEREDOC
   end
 
