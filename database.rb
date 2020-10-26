@@ -33,15 +33,15 @@ module Database
     end
   end
 
-  def self.list(item_class)
+  def self.list(item_class, filter = {})
     item = item_class.instance_of?(Class) ? item_class.new : item_class
     case item
     when Manga
-      list_mangas
+      list_mangas(filter)
     when User
-      list_users
+      list_users(filter)
     when Favorite
-      list_favorites
+      list_favorites(filter)
     else
       raise 'Tipo desconhecido'
     end
@@ -62,9 +62,9 @@ module Database
     firebase.push('mangas', { title: manga.title, chapter: manga.chapter, user_id: manga.user_id, created_at: Time.now })
   end
 
-  def self.list_mangas
+  def self.list_mangas(filter)
     mangas = []
-    response = firebase.get('mangas')
+    response = firebase.get('mangas', filter)
     return mangas if response.code != 200 || response.body.nil?
 
     response.body.each_key do |key|
@@ -85,9 +85,9 @@ module Database
     firebase.push('favorites', { title: favorite.title, active: favorite.active, user_id: favorite.user_id, created_at: Time.now })
   end
 
-  def self.list_favorites
+  def self.list_favorites(filter)
     favorites = []
-    response = firebase.get('favorites')
+    response = firebase.get('favorites', filter)
     return favorites if response.code != 200 || response.body.nil?
 
     response.body.each_key do |key|
@@ -108,9 +108,9 @@ module Database
     firebase.push('users', { first_name: user.first_name, last_name: user.last_name, cookie: user.cookie, chat_id: user.chat_id, active: user.active, created_at: Time.now })
   end
 
-  def self.list_users
+  def self.list_users(filter)
     users = []
-    response = firebase.get('users')
+    response = firebase.get('users', filter)
     return users if response.code != 200 || response.body.nil?
 
     response.body.each_key do |key|

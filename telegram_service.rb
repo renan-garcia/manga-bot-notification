@@ -24,7 +24,8 @@ module TelegramService
           if command[:args].nil?
             bot.api.send_message(chat_id: message.chat.id, text: 'Cookie é obrigatório.')
           else
-            users = Database.list(User)
+            params = { orderBy: '"chat_id"', equalTo: message.chat.id }
+            users = Database.list(User, params)
             user = users.find { |u| u.chat_id == message.chat.id }
             if user.nil?
               Bot.register_user(command[:args], message.chat.id, message.from.first_name, message.from.last_name)
@@ -35,7 +36,8 @@ module TelegramService
             end
           end
         when '/update-mangas'
-          users = Database.list(User)
+          params = { orderBy: '"chat_id"', equalTo: message.chat.id }
+          users = Database.list(User, params)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }
           if user.nil?
             bot.api.send_message(chat_id: message.chat.id, text: 'Usuário não cadastrado ou inativo')
@@ -44,7 +46,8 @@ module TelegramService
             bot.api.send_message(chat_id: message.chat.id, text: result.empty? ? 'Nenhum lançamento novo' : result)
           end
         when '/my-mangas'
-          users = Database.list(User)
+          params = { orderBy: '"chat_id"', equalTo: message.chat.id }
+          users = Database.list(User, params)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }
           if user.nil?
             bot.api.send_message(chat_id: message.chat.id, text: 'Usuário não cadastrado ou inativo')
@@ -55,7 +58,8 @@ module TelegramService
         when '/help'
           bot.api.send_message(chat_id: message.chat.id, text: help_message)
         when '/remove-register'
-          users = Database.list(User)
+          params = { orderBy: '"chat_id"', equalTo: message.chat.id }
+          users = Database.list(User, params)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }
           if user.nil?
             bot.api.send_message(chat_id: message.chat.id, text: 'Usuário não cadastrado ou inativo')

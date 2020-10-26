@@ -9,3 +9,4 @@ require_relative './controllers/bot_controller'
 get '/' do
   ' ¯ \ _ (ツ) _ / ¯'
 end
+binding.pry

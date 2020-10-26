@@ -28,11 +28,12 @@ module Bot
 
   def self.filter_mangas(mangas, user, ignore_favorites)
     filtered_mangas = []
-    mangas_in_db = Database.list(Manga)
-    favorites_mangas_in_db = Database.list(Favorite)
+    params = { orderBy: '"user_id"', equalTo: %("#{user.id}") }
+    mangas_in_db = Database.list(Manga, params)
+    # favorites_mangas_in_db = Database.list(Favorite)
 
     mangas.each do |manga|
-      next unless manga_in_favorites?(manga, favorites_mangas_in_db, user) || ignore_favorites
+      # next unless manga_in_favorites?(manga, favorites_mangas_in_db, user) || ignore_favorites
 
       check_result = check_this_manga_chapter_in_db(manga, mangas_in_db, user)
       next if check_result[:status] == :old
@@ -72,9 +73,9 @@ module Bot
   end
 
   def self.search_my_mangas(user)
-    mangas = Database.list(Manga)
-    my_mangas = mangas.select { |m| m.user_id == user.id }
-    print_result(my_mangas)
+    params = { orderBy: '"user_id"', equalTo: %("#{user.id}") }
+    mangas = Database.list(Manga, params)
+    print_result(mangas)
   end
 
   def self.register_user(cookie, chat_id, first_name, last_name)
