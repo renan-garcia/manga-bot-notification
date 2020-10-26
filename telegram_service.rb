@@ -18,6 +18,8 @@ module TelegramService
       bot.listen do |message|
         command = prepare_command(message.text)
         case command[:function]
+        when '/start'
+          bot.api.send_message(chat_id: message.chat.id, text: 'Seja bem-vindo! Digite /help para lista de comandos. ¯ \ _ (ツ) _ / ¯')
         when '/register-update'
           if command[:args].nil?
             bot.api.send_message(chat_id: message.chat.id, text: 'Cookie é obrigatório.')
@@ -50,6 +52,14 @@ module TelegramService
             result = Bot.search_my_mangas(user)
             bot.api.send_message(chat_id: message.chat.id, text: result)
           end
+        when '/help'
+          text = "/register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2... \n"
+          text << "/update-mangas - Força a atualização de checagem de novos mangas\n"
+          text << "/my-mangas - Lista todos os seus mangas já trackeados pelo BOT\n"
+          text << "/help - Lista de comandos\n"
+          text << "/remove-register - Desativa seu registro no BOT para parar de trackear seus mangas favoritos\n"
+          text << "\n Esse bot foi criado mais para uso pessoal e como achei que outras pessoas podem desejar isso eu disponibilizei para uso de terceiros. Não me responsabilizo por qualquer uso indevido. Para qualquer duvida ou sugestão acesse o repositório oficial do bot: https://github.com/renan-garcia/manga-bot-notification .\n"
+          bot.api.send_message(chat_id: message.chat.id, text: 'Usuário não cadastrado ou inativo')
         when '/remove-register'
           users = Database.list(User)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }
