@@ -53,13 +53,7 @@ module TelegramService
             bot.api.send_message(chat_id: message.chat.id, text: result)
           end
         when '/help'
-          text = "/register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2... \n"
-          text << "/update-mangas - Força a atualização de checagem de novos mangas\n"
-          text << "/my-mangas - Lista todos os seus mangas já trackeados pelo BOT\n"
-          text << "/help - Lista de comandos\n"
-          text << "/remove-register - Desativa seu registro no BOT para parar de trackear seus mangas favoritos\n"
-          text << "\n Esse bot foi criado mais para uso pessoal e como achei que outras pessoas podem desejar isso eu disponibilizei para uso de terceiros. Não me responsabilizo por qualquer uso indevido. Para qualquer duvida ou sugestão acesse o repositório oficial do bot: https://github.com/renan-garcia/manga-bot-notification .\n"
-          bot.api.send_message(chat_id: message.chat.id, text: 'Usuário não cadastrado ou inativo')
+          bot.api.send_message(chat_id: message.chat.id, text: help_message)
         when '/remove-register'
           users = Database.list(User)
           user = users.find { |u| u.chat_id == message.chat.id && u.active? }
@@ -72,6 +66,17 @@ module TelegramService
         end
       end
     end
+  end
+
+  def self.help_message
+    <<-HEREDOC
+      /register-update - Cria registro no bot parametro obrigatorio cookie da session do NeoxScanlator. Ex: /register-update __cfduid=d0c9c550851869c099e1b87f2... \n
+      /update-mangas - Força a atualização de checagem de novos mangas\n
+      /my-mangas - Lista todos os seus mangas já trackeados pelo BOT\n
+      /help - Lista de comandos\n
+      /remove-register - Desativa seu registro no BOT para parar de trackear seus mangas favoritos\n
+      \n Esse bot foi criado mais para uso pessoal e como achei que outras pessoas podem desejar isso eu disponibilizei para uso de terceiros. Não me responsabilizo por qualquer uso indevido. Para qualquer duvida ou sugestão acesse o repositório oficial do bot: https://github.com/renan-garcia/manga-bot-notification .\n
+    HEREDOC
   end
 
   def self.send_message(chat_id, text)
